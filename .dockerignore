@@ -1,0 +1,25 @@
+# Git
+.git
+.gitignore
+
+# Node cache
+node_modules
+**/node_modules
+**/.pnpm-store
+**/.npm
+**/.cache
+
+# Local env files
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode
+.idea
+
+# Terraform
+.terraform
+*.tfstate
+*.tfstate.*
