@@ -19,11 +19,11 @@ RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
     go build \
-      -trimpath \
-      -ldflags="-s -w -extldflags '-static'" \
-      -tags netgo,osusergo \
-      -o memos \
-      ./cmd/memos
+    -trimpath \
+    -ldflags="-s -w -extldflags '-static'" \
+    -tags netgo,osusergo \
+    -o memos \
+    ./cmd/memos
 
 # Use minimal Alpine with security updates
 FROM alpine:3.21 AS monolithic
@@ -49,8 +49,8 @@ WORKDIR /var/opt/memos
 VOLUME /var/opt/memos
 
 ENV TZ="UTC" \
-    MEMOS_PORT="5230"
+    MEMOS_PORT="80"
 
-EXPOSE 5230
+EXPOSE 80
 
 ENTRYPOINT ["/usr/local/memos/entrypoint.sh", "/usr/local/memos/memos"]
