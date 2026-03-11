@@ -51,9 +51,6 @@ module "ecs" {
   source = "./modules/ecs"
 
   project_name = var.project_name
-  environment  = var.environment
-
-  vpc_id = module.vpc.vpc_id
 
   private_subnet_ids    = module.vpc.private_subnets
   ecs_security_group_id = module.security.ecs_sg
@@ -65,4 +62,8 @@ module "ecs" {
   memory         = 512
 
   desired_count = 1
+
+  execution_role_arn = module.iam.execution_role_arn
+  task_role_arn      = module.iam.task_role_arn
+  target_group_arn   = module.alb.target_group_arn
 }
