@@ -2,8 +2,8 @@ resource "aws_lb" "this" {
   name               = "memos-alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [var.alb_security_group_id]
-  subnets            = var.public_subnet_ids
+  security_groups    = [var.security_group]
+  subnets            = var.public_subnets
 
   tags = {
     Name = "memos-alb"
