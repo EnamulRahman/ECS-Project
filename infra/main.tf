@@ -32,7 +32,7 @@ module "alb" {
   project_name     = var.project_name
   vpc_id           = module.vpc.vpc_id
   public_subnets   = module.vpc.public_subnets
-  security_group   = module.security.alb_sg
+  security_group   = module.security.alb_security_group_id
   certificate_arn  = module.acm.certificate_arn
 }
 
@@ -54,7 +54,7 @@ module "ecs" {
   project_name = var.project_name
 
   private_subnet_ids    = module.vpc.private_subnets
-  ecs_security_group_id = module.security.ecs_sg
+  ecs_security_group_id = module.security.ecs_security_group_id
 
   image_url = module.ecr.repository_url
 
