@@ -5,8 +5,6 @@ resource "aws_security_group" "alb" {
     description = "Security group for ALB"
     vpc_id      = var.vpc_id
 
-    in
-
 
 ingress {
     description = "allow HTTP from internet"
@@ -38,7 +36,7 @@ tags = merge(var.tags, {
 }
 
 # ECS sg
-resource "aws_security_group" "ecs" = { 
+resource "aws_security_group" "ecs" { 
 name        = "${var.project_name}-${var.environment}-ecs-sg"
   description = "Security group for ECS service"
   vpc_id      = var.vpc_id
@@ -71,4 +69,3 @@ tags = merge(var.tags, {
 
 
 
-}
