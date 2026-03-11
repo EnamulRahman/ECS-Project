@@ -1,0 +1,54 @@
+module "vpc" {
+  source = "./modules/vpc"
+
+  project_name = var.project_name
+  cidr_block   = var.vpc_cidr
+}
+
+module "security" {
+  source = "./modules/security"
+
+  vpc_id       = module.vpc.vpc_id
+  project_name = var.project_name
+}
+
+module "acm" {
+  source = "./modules/acm"
+
+  project_name = var.project_name
+  domain_name  = var.domain_name
+}
+
+module "alb" {
+  source = "./modules/alb"
+
+  project_name     = var.project_name
+  vpc_id           = module.vpc.vpc_id
+  public_subnets   = module.vpc.public_subnets
+  security_group   = module.security.alb_sg
+  certificate_arn  = module.acm.certificate_arn
+}
+
+module "ecr" {
+  source = "./modules/ecr"
+
+  repository_name = var.repository_name
+}
+
+module "iam" {
+  source = "./modules/iam"
+
+  project_name = var.project_name
+}
+
+module "ecs" {
+  source = "./modules/ecs"
+
+  project_name        = var.project_name
+  private_subnets     = module.vpc.private_subnets
+  security_group      = module.security.ecs_sg
+  target_group_arn    = module.alb.target_group_arn
+  execution_role_arn  = module.iam.execution_role_arn
+  task_role_arn       = module.iam.task_role_arn
+  container_image     = module.ecr.repository_url
+}
