@@ -1,7 +1,3 @@
-variable "project_name" {
-    description = "Name of the project"
-    type = string" 
-}
 
 # ALB sg
 resource "aws_security_group" "alb" {
