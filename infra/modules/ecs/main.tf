@@ -3,66 +3,13 @@ resource "aws_ecs_cluster" "this" {
   name = "${var.project_name}-cluster"
 }
 
-# ECS Task Definition
-resource "aws_ecs_task_definition" "this" {
-  family                   = "${var.project_name}-task"
-  requires_compatibilities = ["FARGATE"]
-  network_mode             = "awsvpc"
-
-  cpu    = var.cpu
-  memory = var.memory
-
-  execution_role_arn = var.execution_role_arn
-  task_role_arn      = var.task_role_arn
-
-  container_definitions = jsonencode([
-    {
-      name  = "memos"
-      image = var.image_url
-
-      portMappings = [
-        {
-          containerPort = var.container_port
-          hostPort      = var.container_port
-          protocol      = "tcp"
-        }
-      ]
-
-      essential = true
-    }
-  ])
-}
-
-# ECS Service
-resource "aws_ecs_service" "this" {
-  name            = "${var.project_name}-service"
-  cluster         = aws_ecs_cluster.this.id
-  task_definition = aws_ecs_task_definition.this.arn
-  desired_count   = var.desired_count
-  launch_type     = "FARGATE"
-
-  network_configuration {
-    subnets          = var.private_subnet_ids
-    security_groups  = [var.ecs_security_group_id]
-    assign_public_ip = false
-  }
-
-  load_balancer {
-    target_group_arn = var.target_group_arn
-    container_name   = "memos"
-    container_port   = var.container_port
-  }
-
-  depends_on = [
-    aws_ecs_task_definition.this
-  ]
-}
-
+# CloudWatch Log Group
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/ecs/${var.project_name}"
   retention_in_days = 7
 }
 
+# ECS Task Definition
 resource "aws_ecs_task_definition" "this" {
   family                   = "${var.project_name}-task"
   requires_compatibilities = ["FARGATE"]
@@ -99,4 +46,29 @@ resource "aws_ecs_task_definition" "this" {
       }
     }
   ])
+}
+
+# ECS Service
+resource "aws_ecs_service" "this" {
+  name            = "${var.project_name}-service"
+  cluster         = aws_ecs_cluster.this.id
+  task_definition = aws_ecs_task_definition.this.arn
+  desired_count   = var.desired_count
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = var.private_subnet_ids
+    security_groups  = [var.ecs_security_group_id]
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = var.target_group_arn
+    container_name   = "memos"
+    container_port   = var.container_port
+  }
+
+  depends_on = [
+    aws_ecs_task_definition.this
+  ]
 }
