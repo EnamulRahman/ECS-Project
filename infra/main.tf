@@ -58,7 +58,7 @@ module "ecs" {
 
   image_url = module.ecr.repository_url
 
-  container_port = 5230
+  container_port = 8081
   cpu            = 256
   memory         = 512
 

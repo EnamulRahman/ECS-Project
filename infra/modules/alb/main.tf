@@ -12,7 +12,7 @@ resource "aws_lb" "this" {
 
 resource "aws_lb_target_group" "this" {
   name        = "${var.project_name}-tg"
-  port        = 5230
+  port        = 8081
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
@@ -20,7 +20,7 @@ resource "aws_lb_target_group" "this" {
   health_check {
     path                = "/"
     protocol            = "HTTP"
-    port                = "5230"
+    port                = "8081"
     matcher             = "200-399"
     interval            = 30
     timeout             = 5
