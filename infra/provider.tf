@@ -1,27 +1,29 @@
-# tells terraform to use AWSA
-
 terraform {
-    required_version = ">= 1.6.0"
+  required_version = ">= 1.6.0"
 
-    required_providers {
-        aws = {
-            source = "hashicorp/aws"
-            version = "~> 5.0" 
-        }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
     }
-}
+  }
 
-# sets default region 
+  backend "s3" {
+    bucket         = "memos-terraform-state-enamul"
+    key            = "prod/terraform.tfstate"
+    region         = "eu-west-1"
+    dynamodb_table = "terraform-locks"
+    encrypt        = true
+  }
+}
 
 provider "aws" {
   region = var.aws_region
 
-# auto tags all resources
-
   default_tags {
-    tags = { 
-        Project = "Memos" 
-        ManagedBy = "terraform"
+    tags = {
+      Project   = "Memos"
+      ManagedBy = "Terraform"
     }
   }
 }
