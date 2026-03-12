@@ -68,3 +68,19 @@ module "ecs" {
   task_role_arn      = module.iam.task_role_arn
   target_group_arn   = module.alb.target_group_arn
 }
+
+data "aws_route53_zone" "main" {
+  name = var.domain_name
+}
+
+resource "aws_route53_record" "app" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = "tm.${var.domain_name}"
+  type    = "A"
+
+  alias {
+    name                   = module.alb.dns_name
+    zone_id                = module.alb.alb_zone_id
+    evaluate_target_health = true
+  }
+}
