@@ -33,3 +33,9 @@ variable "repository_name" {
 variable "aws_region" {
   type = string
 }
+
+variable "image_url" {
+  description = "ECR image URL passed from CI/CD pipeline"
+  type        = string
+  default     = ""
+}
