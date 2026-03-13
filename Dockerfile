@@ -22,7 +22,7 @@ RUN pnpm build
 # BACKEND BUILD (Go)
 
 
-FROM golang:1.25-alpine AS backend-builder
+FROM golang:1.23-alpine AS backend-builder
 
 WORKDIR /src/memos
 
@@ -59,7 +59,7 @@ RUN apk add --no-cache ca-certificates tzdata libc6-compat
 COPY --from=backend-builder /memos /usr/local/bin/memos
 
 # Expose Memos port
-EXPOSE 5230
+EXPOSE 8081
 
 # Start Memos
 ENTRYPOINT ["memos"]
