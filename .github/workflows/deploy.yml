@@ -12,6 +12,15 @@ env:
   ECS_SERVICE: memos-service
 
 jobs:
+
+  debug:
+    name: Debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug
+        run: |
+          echo "Role ARN: ${{ secrets.AWS_ROLE_ARN }}"
+          echo "Region: ${{ env.AWS_REGION }}"
   build:
     name: Build and Push to ECR
     runs-on: ubuntu-latest
