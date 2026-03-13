@@ -25,7 +25,7 @@ RUN pnpm build
 FROM golang:1.23-alpine AS backend-builder
 ENV GOTOOLCHAIN=auto
 
-WORKDIR /src/memos
+WORKDIR /src/app
 
 # Required for CGO
 RUN apk add --no-cache git build-base
