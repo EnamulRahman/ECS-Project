@@ -5,14 +5,14 @@ FROM node:20-alpine AS frontend-builder
 
 RUN corepack enable
 
-WORKDIR /src/memos/web
+WORKDIR /src/app/web
 
 # Copy dependency files
-COPY memos/web/package.json memos/web/pnpm-lock.yaml ./
+COPY app/web/package.json app/web/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Copy frontend source
-COPY memos/web ./
+COPY app/web ./
 
 # Build frontend
 RUN pnpm build
@@ -31,16 +31,16 @@ WORKDIR /src/memos
 RUN apk add --no-cache git build-base
 
 # Copy Go mod files
-COPY memos/go.mod memos/go.sum ./
+COPY app/go.mod app/go.sum ./
 RUN go mod download
 
 # Single backend copy
-COPY memos ./
+COPY app ./
 
 # Copy frontend dist into backend expected path
 COPY --from=frontend-builder \
-    /src/memos/web/dist \
-    /src/memos/server/router/frontend/dist
+    /src/app/web/dist \
+    /src/app/server/router/frontend/dist
 
 # Build Go binary
 RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 \
