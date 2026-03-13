@@ -84,3 +84,5 @@ resource "aws_route53_record" "app" {
     evaluate_target_health = true
   }
 }
+
+image_url = var.image_url != "" ? var.image_url : module.ecr.repository_url
