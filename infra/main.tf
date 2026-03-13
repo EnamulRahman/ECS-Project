@@ -56,7 +56,7 @@ module "ecs" {
   private_subnet_ids    = module.vpc.private_subnets
   ecs_security_group_id = module.security.ecs_security_group_id
 
-  image_url = module.ecr.repository_url
+  image_url = var.image_url != "" ? var.image_url : module.ecr.repository_url
 
   container_port = 8081
   cpu            = 256
@@ -85,4 +85,3 @@ resource "aws_route53_record" "app" {
   }
 }
 
-image_url = var.image_url != "" ? var.image_url : module.ecr.repository_url
