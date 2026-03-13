@@ -29,11 +29,11 @@ module "acm" {
 module "alb" {
   source = "./modules/alb"
 
-  project_name     = var.project_name
-  vpc_id           = module.vpc.vpc_id
-  public_subnets   = module.vpc.public_subnets
-  security_group   = module.security.alb_security_group_id
-  certificate_arn  = module.acm.certificate_arn
+  project_name    = var.project_name
+  vpc_id          = module.vpc.vpc_id
+  public_subnets  = module.vpc.public_subnets
+  security_group  = module.security.alb_security_group_id
+  certificate_arn = module.acm.certificate_arn
 }
 
 module "ecr" {
