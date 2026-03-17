@@ -64,3 +64,6 @@ EXPOSE 8081
 
 # Start Memos
 ENTRYPOINT ["memos"]
+
+RUN adduser -D -u 1001 appuser
+USER appuser
