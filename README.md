@@ -28,6 +28,20 @@ graph TD
     end
 ```
 
+
+## Docker Image Optimisation
+
+The app is built using a multi-stage Dockerfile to keep the production 
+image as small as possible.
+
+| Build type   | Image size |
+|--------------|------------|
+| Single stage | ~2GB       |
+| Multi-stage  | ~50MB      |
+
+The single stage figure includes Node.js, pnpm, the Go compiler, and all 
+build tools. The final image contains only the compiled binary and 
+runtime dependencies.
 ---
 
 ## Infrastructure Overview
